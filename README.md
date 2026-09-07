@@ -1,6 +1,6 @@
 # rag-eval
 
-[![CI](https://github.com/aseydaaksakal/rag-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/aseydaaksakal/rag-eval/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/aseydaaksakal/rag-eval?quickstart=1)
+[![CI](https://github.com/aseydaaksakal/rag-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/aseydaaksakal/rag-eval/actions/workflows/ci.yml) [![Docs & live playground](https://img.shields.io/badge/docs-live%20playground-2563eb)](https://aseydaaksakal.github.io/rag-eval/playground.html) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/aseydaaksakal/rag-eval?quickstart=1)
 
 Regression testing for RAG pipelines. Retrieval metrics, hallucination tracking, and a baseline you can fail a build against.
 
@@ -23,6 +23,9 @@ hallucination  0.2800  +0.1800
 FAIL: 1 threshold breached.
   - groundedness moved 0.1800 the wrong way (0.9000 -> 0.7200), over the 0.0200 allowance
 ```
+
+
+**Try it without installing anything:** [aseydaaksakal.github.io/rag-eval/playground.html](https://aseydaaksakal.github.io/rag-eval/playground.html) — the real package running in your browser.
 
 ---
 
