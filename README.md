@@ -1,5 +1,7 @@
 # rag-eval
 
+[![CI](https://github.com/aseydaaksakal/rag-eval/actions/workflows/ci.yml/badge.svg)](https://github.com/aseydaaksakal/rag-eval/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/aseydaaksakal/rag-eval?quickstart=1)
+
 Regression testing for RAG pipelines. Retrieval metrics, hallucination tracking, and a baseline you can fail a build against.
 
 The default judge is deterministic and offline, so the whole thing runs in CI without a model call.
@@ -237,6 +239,8 @@ for result in run.worst("groundedness", limit=10):
 ```
 
 ## Try it
+
+No local setup: click **Open in GitHub Codespaces** above, wait for the terminal, then run the commands below.
 
 The repository ships a toy pipeline so the examples run with nothing installed:
 
