@@ -9,7 +9,7 @@ description = "Regression testing for RAG pipelines: retrieval metrics, hallucin
 readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "LICENSE" }
-authors = [{ name = "Abdullah Seyda Aksakal", email = "aseydaaksakal@gmail.com" }]
+authors = [{ name = "Abdullah Seyda Aksakal" }]
 keywords = ["rag", "evaluation", "llm", "retrieval", "hallucination", "testing", "ragas"]
 classifiers = [
     "Development Status :: 3 - Alpha",
