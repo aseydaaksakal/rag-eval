@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>rag-eval playground</title>
+<style>
+  :root { color-scheme: light dark; --line:#e5e7eb; --muted:#6b7280; --accent:#2563eb; --bg2:#f9fafb; }
+  @media (prefers-color-scheme: dark) { :root { --line:#1f2937; --muted:#9ca3af; --bg2:#111827; } body { background:#0b0f19; color:#e5e7eb; } }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif; margin:0; padding:1.5rem; max-width:72rem; margin-inline:auto; }
+  h1 { font-size:1.4rem; margin:0 0 .25rem; } .sub { color:var(--muted); margin:0 0 1.25rem; }
+  .sub a { color:var(--accent); }
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:1rem; } @media (max-width:800px){ .cols{grid-template-columns:1fr} }
+  label { display:block; font-weight:600; font-size:.85rem; margin:.5rem 0 .25rem; }
+  textarea { width:100%; box-sizing:border-box; min-height:15rem; font:12.5px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; padding:.6rem; border:1px solid var(--line); border-radius:6px; background:var(--bg2); color:inherit; resize:vertical; }
+  .bar { display:flex; gap:.75rem; align-items:center; flex-wrap:wrap; margin:1rem 0; }
+  button { font:inherit; font-weight:600; padding:.55rem 1.1rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer; }
+  button:disabled { opacity:.5; cursor:wait; }
+  .chip { font-size:.85rem; } .chip input { margin-right:.3rem; }
+  #status { color:var(--muted); font-size:.85rem; }
+  pre { background:var(--bg2); border:1px solid var(--line); border-radius:6px; padding:.8rem; overflow:auto; font-size:12.5px; margin:0; }
+  table { border-collapse:collapse; width:100%; font-size:.9rem; margin-top:.5rem; }
+  th,td { text-align:left; padding:.4rem .6rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-size:.75rem; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  .bad { color:#b91c1c; font-weight:600; } .err { color:#b91c1c; }
+  details { margin-top:1rem; } summary { cursor:pointer; font-weight:600; }
+  .note { font-size:.85rem; color:var(--muted); margin-top:.35rem; }
+</style>
+</head>
+<body>
+<h1>rag-eval playground</h1>
+<p class="sub">The actual <a href="https://github.com/aseydaaksakal/rag-eval">rag-eval</a> package, running in your browser via Pyodide. Nothing leaves this page. Edit the inputs and evaluate — the third example is a hallucination on purpose. <a href="index.html">← docs</a></p>
+
+<div class="cols">
+  <div>
+    <label for="dataset">Dataset (JSONL — one question per line)</label>
+    <textarea id="dataset"># id and question are required; relevant_ids unlock retrieval metrics
+{"id": "q1", "question": "How long do I have to request a refund?", "relevant_ids": ["policy-refund"], "reference_answer": "Thirty days from delivery.", "tags": ["policy"]}
+{"id": "q2", "question": "How do I cancel an order?", "relevant_ids": ["policy-cancel"], "tags": ["policy", "howto"]}
+{"id": "q3", "question": "Which countries get express shipping?", "relevant_ids": ["shipping-express"], "tags": ["shipping"]}
+{"id": "q4", "question": "How do I return a gift without a receipt?", "relevant_ids": ["policy-refund", "policy-gift"], "tags": ["policy", "multi-hop"]}</textarea>
+    <p class="note">Keep <code>id</code> stable across runs — regression comparison matches on it.</p>
+  </div>
+  <div>
+    <label for="preds">Your pipeline's output (JSON, keyed by example id)</label>
+    <textarea id="preds">{
+  "q1": {"answer": "Refunds are accepted within a 30 day window from the delivery date.",
+         "chunks": [{"id": "policy-refund", "text": "Refunds are accepted within a 30 day window from the delivery date."}]},
+  "q2": {"answer": "Email support before the order enters fulfilment to cancel it.",
+         "chunks": [{"id": "policy-cancel", "text": "To cancel an order, email support before it enters fulfilment."},
+                    {"id": "shipping-times", "text": "Standard parcels arrive in three to five working days."}]},
+  "q3": {"answer": "Our courier partner delivers on Tuesdays in seventeen cities.",
+         "chunks": [{"id": "shipping-express", "text": "Express shipping is available in nine countries."}]},
+  "q4": {"answer": "Gift returns without a receipt are issued as store credit.",
+         "chunks": [{"id": "policy-gift", "text": "Gift returns without a receipt are issued as store credit."},
+                    {"id": "policy-warranty", "text": "The warranty covers manufacturing defects for two years."}]}
+}</textarea>
+    <p class="note"><code>chunks</code> in rank order; <code>text</code> is what groundedness reads.</p>
+  </div>
+</div>
+
+<div class="bar">
+  <button id="run" disabled>Loading Python…</button>
+  <span class="chip"><input type="checkbox" class="m" value="recall@3" checked>recall@3</span>
+  <span class="chip"><input type="checkbox" class="m" value="precision@3" checked>precision@3</span>
+  <span class="chip"><input type="checkbox" class="m" value="mrr@3" checked>mrr@3</span>
+  <span class="chip"><input type="checkbox" class="m" value="ndcg@3">ndcg@3</span>
+  <span class="chip"><input type="checkbox" class="m" value="groundedness" checked>groundedness</span>
+  <span class="chip"><input type="checkbox" class="m" value="hallucination" checked>hallucination</span>
+  <span class="chip"><input type="checkbox" class="m" value="answer_correctness">answer_correctness</span>
+  <span class="chip"><input type="checkbox" class="m" value="refusal_rate">refusal_rate</span>
+  <span id="status"></span>
+</div>
+
+<div id="out"></div>
+
+<details><summary>What you would run locally</summary>
+<pre>pip install rag-eval
+rag-eval run --dataset questions.jsonl --pipeline myapp.rag:build --out results.json
+rag-eval baseline save results.json
+rag-eval compare results.json      # exits 1 on regression</pre>
+</details>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.27.0/full/pyodide.js"></script>
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let pyodide;
+
+const PY = `
+import json
+from rag_eval import evaluate_predictions
+from rag_eval.types import Example
+from rag_eval.judges.lexical import LexicalJudge
+
+def run(dataset_text, preds_text, metrics):
+    examples = [Example.from_dict(json.loads(l)) for l in dataset_text.splitlines()
+                if l.strip() and not l.strip().startswith("#")]
+    preds = json.loads(preds_text)
+    run = evaluate_predictions(examples, preds, metrics=list(metrics))
+    judge = LexicalJudge()
+    rows = []
+    for r in run.results:
+        ctx = [c.get("text", "") for c in preds.get(r.example_id, {}).get("chunks", [])] if isinstance(preds.get(r.example_id), dict) else []
+        rows.append({**r.to_dict(), "unsupported": judge.unsupported_sentences(r.answer, ctx) if r.answer else []})
+    return json.dumps({"aggregate": run.aggregate(), "by_tag": run.by_tag(), "metrics": run.metrics,
+                       "results": rows, "failures": len(run.failures)})
+`;
+
+async function boot() {
+  $("#status").textContent = "downloading Pyodide (~10 MB, once)…";
+  pyodide = await loadPyodide();
+  await pyodide.loadPackage("micropip");
+  const micropip = pyodide.pyimport("micropip");
+  $("#status").textContent = "installing rag-eval…";
+  await micropip.install(new URL("rag_eval-0.1.0-py3-none-any.whl", location.href).href);
+  pyodide.runPython(PY);
+  $("#run").textContent = "Evaluate";
+  $("#run").disabled = false;
+  $("#status").textContent = "ready — Python " + pyodide.runPython("import sys; sys.version.split()[0]");
+}
+
+function render(d) {
+  const lower = new Set(["hallucination", "refusal_rate"]);
+  let h = "<table><tr><th>metric</th><th class='num'>score</th></tr>";
+  for (const [k, v] of Object.entries(d.aggregate)) h += `<tr><td>${esc(k)}</td><td class='num'>${v.toFixed(4)}</td></tr>`;
+  h += "</table>";
+  const tags = Object.keys(d.by_tag);
+  if (tags.length) {
+    h += "<h3>By tag</h3><table><tr><th>tag</th>" + d.metrics.map(m => `<th class='num'>${esc(m)}</th>`).join("") + "</tr>";
+    for (const t of tags) h += `<tr><td>${esc(t)}</td>` + d.metrics.map(m => `<td class='num'>${(d.by_tag[t][m] ?? 0).toFixed(3)}</td>`).join("") + "</tr>";
+    h += "</table>";
+  }
+  h += "<h3>Per example</h3><table><tr><th>id</th><th>scores</th><th>unsupported sentences</th></tr>";
+  for (const r of d.results) {
+    const scores = Object.entries(r.scores).map(([k, v]) => {
+      const bad = lower.has(k) ? v > 0.5 : v < 0.5;
+      return `<span class="${bad ? "bad" : ""}">${esc(k)}=${v.toFixed(2)}</span>`;
+    }).join("&nbsp; ");
+    const uns = r.error ? `<span class="err">${esc(r.error)}</span>` : r.unsupported.map(esc).join("<br>") || "—";
+    h += `<tr><td>${esc(r.example_id)}</td><td>${scores}</td><td>${uns}</td></tr>`;
+  }
+  h += "</table>";
+  if (d.failures) h += `<p class="err">${d.failures} example(s) had no prediction or raised.</p>`;
+  $("#out").innerHTML = h;
+}
+
+$("#run").addEventListener("click", () => {
+  const metrics = [...document.querySelectorAll(".m:checked")].map(c => c.value);
+  if (!metrics.length) { $("#out").innerHTML = "<p class='err'>Pick at least one metric.</p>"; return; }
+  $("#run").disabled = true; $("#status").textContent = "evaluating…";
+  try {
+    const fn = pyodide.globals.get("run");
+    render(JSON.parse(fn($("#dataset").value, $("#preds").value, pyodide.toPy(metrics))));
+    $("#status").textContent = "done";
+  } catch (e) {
+    const msg = String(e).split("\n").filter(l => /Error|error:/.test(l)).slice(-1)[0] || String(e);
+    $("#out").innerHTML = `<pre class="err">${esc(msg)}</pre>`;
+    $("#status").textContent = "error";
+  } finally { $("#run").disabled = false; }
+});
+
+boot().catch(e => { $("#status").textContent = "failed to load: " + e; });
+</script>
+</body>
+</html>

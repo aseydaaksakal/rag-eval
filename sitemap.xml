@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://aseydaaksakal.github.io/rag-eval/</loc>
+         <lastmod>2026-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://aseydaaksakal.github.io/rag-eval/getting-started/</loc>
+         <lastmod>2026-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://aseydaaksakal.github.io/rag-eval/judges/</loc>
+         <lastmod>2026-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://aseydaaksakal.github.io/rag-eval/metrics/</loc>
+         <lastmod>2026-09-07</lastmod>
+    </url>
+    <url>
+         <loc>https://aseydaaksakal.github.io/rag-eval/regression-testing/</loc>
+         <lastmod>2026-09-07</lastmod>
+    </url>
+</urlset>

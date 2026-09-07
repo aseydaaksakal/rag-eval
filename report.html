@@ -1,0 +1,27 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Toy pipeline</title><style>
+:root { color-scheme: light dark; }
+body { font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+       margin: 0 auto; padding: 2.5rem 1.5rem; max-width: 62rem; }
+h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
+h2 { font-size: 1.1rem; margin: 2.5rem 0 .75rem; }
+.sub { color: #6b7280; margin: 0 0 2rem; font-size: .9rem; }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid #e5e7eb; }
+th { font-weight: 600; color: #6b7280; font-size: .8rem; text-transform: uppercase;
+     letter-spacing: .03em; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.up { color: #15803d; } .down { color: #b91c1c; }
+.banner { padding: .8rem 1rem; border-radius: 6px; margin-bottom: 1.5rem; font-weight: 600; }
+.banner.pass { background: #dcfce7; color: #14532d; }
+.banner.fail { background: #fee2e2; color: #7f1d1d; }
+.banner ul { font-weight: 400; margin: .5rem 0 0; padding-left: 1.2rem; }
+.q { max-width: 34rem; }
+.bar { display: inline-block; height: .5rem; background: #93c5fd; border-radius: 2px;
+       vertical-align: middle; margin-right: .4rem; }
+@media (prefers-color-scheme: dark) {
+  body { background: #0b0f19; color: #e5e7eb; }
+  th, td { border-color: #1f2937; }
+  .banner.pass { background: #14532d; color: #dcfce7; }
+  .banner.fail { background: #7f1d1d; color: #fee2e2; }
+}
+</style></head><body><h1>Toy pipeline</h1><p class='sub'>8 examples &middot; example_count: 8 &middot; judge: lexical &middot; pipeline: toy &middot; top_k: 3</p><h2>Metrics</h2><table><tr><th>Metric</th><th class='num'>Score</th><th class='num'>vs baseline</th></tr><tr><td>recall@3</td><td class='num'><span class='bar' style='width:150px'></span>0.9375</td><td class='num'>-</td></tr><tr><td>mrr@3</td><td class='num'><span class='bar' style='width:160px'></span>1.0000</td><td class='num'>-</td></tr><tr><td>ndcg@3</td><td class='num'><span class='bar' style='width:160px'></span>1.0000</td><td class='num'>-</td></tr><tr><td>groundedness</td><td class='num'><span class='bar' style='width:160px'></span>1.0000</td><td class='num'>-</td></tr><tr><td>hallucination</td><td class='num'><span class='bar' style='width:2px'></span>0.0000</td><td class='num'>-</td></tr><tr><td>refusal_rate</td><td class='num'><span class='bar' style='width:2px'></span>0.0000</td><td class='num'>-</td></tr></table><h2>By tag</h2><table><tr><th>Tag</th><th class='num'>recall@3</th><th class='num'>mrr@3</th><th class='num'>ndcg@3</th><th class='num'>groundedness</th><th class='num'>hallucination</th><th class='num'>refusal_rate</th></tr><tr><td>howto</td><td class='num'>1.0000</td><td class='num'>1.0000</td><td class='num'>1.0000</td><td class='num'>1.0000</td><td class='num'>0.0000</td><td class='num'>0.0000</td></tr><tr><td>multi-hop</td><td class='num'>0.5000</td><td class='num'>1.0000</td><td class='num'>1.0000</td><td class='num'>1.0000</td><td class='num'>0.0000</td><td class='num'>0.0000</td></tr><tr><td>policy</td><td class='num'>0.9000</td><td class='num'>1.0000</td><td class='num'>1.0000</td><td class='num'>1.0000</td><td class='num'>0.0000</td><td class='num'>0.0000</td></tr><tr><td>shipping</td><td class='num'>1.0000</td><td class='num'>1.0000</td><td class='num'>1.0000</td><td class='num'>1.0000</td><td class='num'>0.0000</td><td class='num'>0.0000</td></tr></table><h2>Lowest recall@3</h2><table><tr><th class='num'>recall@3</th><th>Example</th><th>Question</th><th>Answer</th></tr><tr><td class='num'>0.500</td><td>q6</td><td class='q'>How do I return a gift without a receipt?</td><td class='q'>Gift returns without a receipt are issued as store credit.</td></tr><tr><td class='num'>1.000</td><td>q1</td><td class='q'>How long do I have to request a refund?</td><td class='q'>Refunds are accepted within a 30 day window from the delivery date.</td></tr><tr><td class='num'>1.000</td><td>q2</td><td class='q'>How do I cancel an order?</td><td class='q'>To cancel an order, email support before it enters fulfilment.</td></tr><tr><td class='num'>1.000</td><td>q3</td><td class='q'>Which countries get express shipping?</td><td class='q'>Express shipping is available in nine countries.</td></tr><tr><td class='num'>1.000</td><td>q4</td><td class='q'>What does the warranty cover?</td><td class='q'>The warranty covers manufacturing defects for two years.</td></tr><tr><td class='num'>1.000</td><td>q5</td><td class='q'>Can I change the delivery address after ordering?</td><td class='q'>The delivery address can be changed until the parcel is picked up.</td></tr><tr><td class='num'>1.000</td><td>q7</td><td class='q'>Is there a restocking fee?</td><td class='q'>A 15 percent restocking fee applies to opened electronics.</td></tr><tr><td class='num'>1.000</td><td>q8</td><td class='q'>When will my parcel arrive?</td><td class='q'>Standard parcels arrive in three to five working days.</td></tr></table></body></html>
