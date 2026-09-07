@@ -1,0 +1,53 @@
+{
+  "aggregate": {
+    "groundedness": 1.0,
+    "hallucination": 0.0,
+    "mrr@3": 1.0,
+    "recall@3": 0.9375,
+    "refusal_rate": 0.0
+  },
+  "by_tag": {
+    "howto": {
+      "groundedness": 1.0,
+      "hallucination": 0.0,
+      "mrr@3": 1.0,
+      "recall@3": 1.0,
+      "refusal_rate": 0.0
+    },
+    "multi-hop": {
+      "groundedness": 1.0,
+      "hallucination": 0.0,
+      "mrr@3": 1.0,
+      "recall@3": 0.5,
+      "refusal_rate": 0.0
+    },
+    "policy": {
+      "groundedness": 1.0,
+      "hallucination": 0.0,
+      "mrr@3": 1.0,
+      "recall@3": 0.9,
+      "refusal_rate": 0.0
+    },
+    "shipping": {
+      "groundedness": 1.0,
+      "hallucination": 0.0,
+      "mrr@3": 1.0,
+      "recall@3": 1.0,
+      "refusal_rate": 0.0
+    }
+  },
+  "created_at": "2026-09-07T11:17:08+00:00",
+  "example_count": 8,
+  "label": "bootstrap",
+  "metadata": {
+    "example_count": 8,
+    "judge": "lexical"
+  },
+  "metrics": [
+    "recall@3",
+    "mrr@3",
+    "groundedness",
+    "hallucination",
+    "refusal_rate"
+  ]
+}

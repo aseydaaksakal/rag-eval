@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rag-eval"
+version = "0.1.0"
+description = "Regression testing for RAG pipelines: retrieval metrics, hallucination tracking, baselines you can fail a build against."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [{ name = "Abdullah Seyda Aksakal", email = "aseydaaksakal@gmail.com" }]
+keywords = ["rag", "evaluation", "llm", "retrieval", "hallucination", "testing", "ragas"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Testing",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "ruff>=0.5"]
+
+[project.scripts]
+rag-eval = "rag_eval.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/aseydaaksakal/rag-eval"
+Documentation = "https://github.com/aseydaaksakal/rag-eval#readme"
+Issues = "https://github.com/aseydaaksakal/rag-eval/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rag_eval"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]

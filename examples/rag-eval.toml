@@ -1,0 +1,27 @@
+# Thresholds for `rag-eval compare`.
+#
+# minimum   an absolute floor, checked with or without a baseline
+# max_drop  how far the metric may move the wrong way from the baseline
+#
+# Direction comes from the metric itself, so `minimum` on hallucination is a
+# ceiling and no sign needs flipping here.
+
+[thresholds."recall@3"]
+minimum = 0.70
+max_drop = 0.02
+
+[thresholds."mrr@3"]
+max_drop = 0.03
+
+[thresholds.groundedness]
+minimum = 0.80
+max_drop = 0.02
+
+[thresholds.hallucination]
+minimum = 0.20
+max_drop = 0.02
+
+# A pipeline that starts refusing everything scores well on hallucination.
+# This is the threshold that notices.
+[thresholds.refusal_rate]
+minimum = 0.25

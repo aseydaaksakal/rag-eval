@@ -1,0 +1,9 @@
+# Support-desk questions. relevant_ids point into the toy corpus in pipeline.py.
+{"id": "q1", "question": "How long do I have to request a refund?", "relevant_ids": ["policy-refund"], "reference_answer": "Thirty days from the delivery date.", "tags": ["policy"]}
+{"id": "q2", "question": "How do I cancel an order?", "relevant_ids": ["policy-cancel"], "reference_answer": "Email support before the order enters fulfilment.", "tags": ["policy", "howto"]}
+{"id": "q3", "question": "Which countries get express shipping?", "relevant_ids": ["shipping-express"], "tags": ["shipping"]}
+{"id": "q4", "question": "What does the warranty cover?", "relevant_ids": ["policy-warranty"], "reference_answer": "Manufacturing defects for two years.", "tags": ["policy"]}
+{"id": "q5", "question": "Can I change the delivery address after ordering?", "relevant_ids": ["shipping-address", "policy-cancel"], "tags": ["shipping", "howto"]}
+{"id": "q6", "question": "How do I return a gift without a receipt?", "relevant_ids": ["policy-refund", "policy-gift"], "tags": ["policy", "multi-hop"]}
+{"id": "q7", "question": "Is there a restocking fee?", "relevant_ids": ["policy-restocking"], "reference_answer": "Fifteen percent on opened electronics.", "tags": ["policy"]}
+{"id": "q8", "question": "When will my parcel arrive?", "relevant_ids": ["shipping-times"], "tags": ["shipping"]}
