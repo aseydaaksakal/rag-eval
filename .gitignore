@@ -17,3 +17,6 @@ htmlcov/
 results*.json
 report*.html
 examples/report.html
+
+# Built docs site
+site/

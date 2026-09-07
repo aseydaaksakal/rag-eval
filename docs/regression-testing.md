@@ -160,7 +160,7 @@ def test_no_regression(run):
 Putting `to_text(run, result)` in the assertion message means the failure output
 is the report, rather than `assert False`.
 
-See [`examples/test_rag_regression.py`](../examples/test_rag_regression.py) for
+See [`examples/test_rag_regression.py`](https://github.com/aseydaaksakal/rag-eval/blob/main/examples/test_rag_regression.py) for
 a working version, including a test that proves the harness catches a generator
 which ignores its context.
 
